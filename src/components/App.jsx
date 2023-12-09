@@ -42,34 +42,56 @@ export class App extends Component {
     })
   }
 
-  formSubmit = (event) => {
-  event.preventDefault();
-  const value = event.target.elements[1].value;
-  this.setState({
-    picture: value,
-    isLoading: true,
-  });
+  // fixed code 
+  componentDidUpdate (prevProps, prevState) {
+    console.log("componentDidUpdate", prevState, this.state);
+    if (prevState.picture !== this.state.picture || prevState.page !== this.state.page) {
+        fetchPicture(this.state.picture, this.state.page)
+        .then(res => {
+          this.setState({
+            picArray: this.state.page ===1 ? res.hits : [...prevState.picArray, ...res.hits],
+            isLoading: false,
+          });
+        })
+     }
+  }
 
-  setTimeout(() => {
-    fetchPicture(value, this.state.page)
-      .then(res => {
-        this.setState({
-          picArray: res.hits,
-          isLoading: false,
-        });
-      })
-  }, 1000);
-};
+  formSubmit = (event) => {
+    event.preventDefault();
+    const value = event.target.elements[1].value;
+    this.setState({
+      picture: value,
+      isLoading: true,
+      page: 1,
+      picArray : [],
+    });
+
+    // setTimeout(() => {
+      // fetchPicture(value, this.state.page)
+      //   .then(res => {
+      //     this.setState({
+      //       picArray: res.hits,
+      //       isLoading: false,
+      //     });
+      //   })
+    // }, 1000);
+  };
 
   handleClick = () => {
-    fetchPicture(this.state.picture, this.state.page + 1)
-      .then(res => {
-        this.setState(prev => ({
-          picArray: [...prev.picArray, ...res.hits],
-          page: prev.page + 1,
-        }));
-      });
+    this.setState(prev => ({
+      // picArray: [...prev.picArray, ...res.hits],
+      page: prev.page + 1,
+    }));
+
+    // fetchPicture(this.state.picture, this.state.page + 1)
+    //   .then(res => {
+    //     this.setState(prev => ({
+    //       picArray: [...prev.picArray, ...res.hits],
+    //       page: prev.page + 1,
+    //     }));
+    //   });
   }
+
   render() {
     return (
       <>
