@@ -8,7 +8,6 @@ import { Button } from "./Button";
 import { Loader } from "./Loader";
 import { fetchPicture } from "api/api";
 import { ModalWindow } from "./Modal";
-import basicLightbox from 'basiclightbox'; 
 
 //  33816653-3cca4f3926f281165d337bdaa (my API KEY)
 // https://pixabay.com/api/?q=cat&page=1&key=your_key&image_type=photo&orientation=horizontal&per_page=12 (URL-рядок HTTP-запиту)
